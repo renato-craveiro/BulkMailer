@@ -1,0 +1,20 @@
+{
+    "title": "Automação de E-mails",
+    "label": "Envie e gerencie seus e-mails em massa de forma eficiente",
+
+    "from": "De",
+    "reply": "Responder Para",
+    "subject": "Assunto",
+    "subj_title":"Título do Assunto",
+    "data": "Dados: Destinatário;conteúdo",
+    "template": "Template",
+    "template_editor": "Template: Conteúdo base do Email (use {número} para cada conteúdo variável)",
+    "upload_html": "Carregar HTML",
+    "upload_csv": "Carregar CSV",
+    "submit": "Enviar",
+    "send_email": "Enviar E-mail",
+
+    "html_template":"{0}, seu pedido {2} foi processado com sucesso!",
+    "csv_template": "teste1@email.com; João; Pedido #1234\nteste2@email.com; Maria; Pedido #5678"
+  }
+  

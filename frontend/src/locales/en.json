@@ -1,0 +1,20 @@
+{
+    "title": "Email Automation",
+    "label": "Send and manage your mass emails efficiently",
+
+    "from": "From",
+    "reply": "Reply To",
+    "subject": "Subject",
+    "subj_title":"Subject Title",
+    "data": "Data: Receiver;content",
+    "template_editor": "Template: Email base content (use {number} for each variable content)",
+    "template": "Template",
+    "upload_html": "Upload HTML",
+    "upload_csv": "Upload CSV",
+    "submit": "Send",
+    "send_email": "Send Email",
+
+    "html_template":"{0}, your request no. {2} was successfully processed!",
+    "csv_template": "test1@email.com; John; Request #1234\ntest2@email.com; Doe; Request #5678"
+  }
+  

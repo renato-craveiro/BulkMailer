@@ -1,0 +1,40 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "main": "cli.js",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "esbuild index.js --bundle --platform=node --target=node16 --format=cjs --outfile=build/index.cjs",
+    "build:win": "pkg build/index.cjs --targets node16-win-x64 --output dist/mailer-cli-win.exe",
+    "build:linux": "pkg build/index.cjs --targets node16-linux-x64 --output dist/mailer-cli-linux",
+    "build:mac": "pkg build/index.cjs --targets node16-macos-x64 --output dist/mailer-cli-macos",
+    "build:all": "npm run bundle && npm run build:win && npm run build:linux && npm run build:mac",
+    "build": "npm run bundle && npm run build:all"
+  },
+  "pkg": {
+    "scripts": [
+      "index.js",
+      "commands/**/*.js",
+      "interactive.js",
+      "utils.js"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "commander": "^14.0.1",
+    "dotenv": "^17.2.2",
+    "fs": "^0.0.1-security",
+    "inquirer": "^8.2.7",
+    "path": "^0.12.7"
+  },
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "^0.25.10",
+    "pkg": "^5.8.1"
+  }
+}

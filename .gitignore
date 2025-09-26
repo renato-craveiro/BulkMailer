@@ -1,0 +1,75 @@
+# =======================
+# Node.js (backend + CLI)
+# =======================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+.pnpm-debug.log
+
+# Logs
+logs/
+*.log
+app.log
+
+# Build / Output
+dist/
+build/
+coverage/
+*.tmp
+*.temp
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# =======================
+# Vue / React frontend
+# =======================
+# Build output
+dist/
+build/
+*.local
+
+# Editor / IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =======================
+# OS-specific
+# =======================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# =======================
+# Environment
+# =======================
+.env
+.env.local
+.env.*.local
+
+# =======================
+# Reports (se não quiser versionar)
+# =======================
+relatorio_emails_*.txt
+email_report_*.txt

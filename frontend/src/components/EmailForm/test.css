@@ -1,0 +1,35 @@
+/* Dark mode */
+.ck-dark .ck-editor__editable_inline {
+    background-color: #00000000 !important;
+    color: #eee !important;
+  }
+  
+  .ck-dark .ck-toolbar {
+    background-color: #1e1e1e !important;
+    border-color: #333 !important;
+  }
+  
+  .ck-dark .ck-toolbar .ck-button {
+    color: #eee !important;
+  }
+  
+  /* Light mode */
+  .ck-light .ck-editor__editable_inline {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+  
+  .ck-light .ck-toolbar {
+    background-color: #f5f5f5 !important;
+    border-color: #ccc !important;
+  }
+  
+  .ck-light .ck-toolbar .ck-button {
+    color: #000 !important;
+  }
+  
+
+  .ck-editor__editable_inline {
+    max-height: 15vh;   /* altura máxima desejada */
+    overflow-y: auto;    /* adiciona rolagem vertical */
+  }

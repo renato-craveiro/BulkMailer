@@ -1,0 +1,29 @@
+# Etapa 1: build do frontend com Node
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Instala dependências
+COPY package*.json ./
+RUN npm install
+
+# Copia código
+COPY . .
+
+# Define argumento para o Vite (API base URL)
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
+# Faz o build de produção
+RUN npm run build
+
+# Etapa 2: servir estático com Nginx
+FROM nginx:alpine
+
+# Copia ficheiros já compilados para o nginx
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Expõe porta 80
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
