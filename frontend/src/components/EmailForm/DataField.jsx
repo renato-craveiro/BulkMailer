@@ -1,11 +1,33 @@
-import { Grid } from "@mui/material";
+/**
+ * Author: <Renato Craveiro>
+ * Email: <renatoalex.olivcraveiro@gmail.com>
+ * Date: 2025-09
+ * Description: DataField component for BulkMailer frontend. Renders a textarea for CSV data input with theme-based styling.
+ */
+
+import { Grid, Tooltip, IconButton } from "@mui/material";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { useTranslation } from "react-i18next";
+
+// Renders a textarea for CSV data input, with dynamic styling based on theme mode
 export default function DataField({ value, onChange, mode }) {
+
   const { t } = useTranslation();
   return (
     <Grid container spacing={1} mb={0.7}>
-      <div style={{paddingLeft: "2px", fontSize: "1rem"}}>
+      <div style={{ paddingLeft: "2px", fontSize: "1rem" }}>
         <label>{t("data")}</label>
+        <Tooltip title={t("help") } arrow>
+          <a
+            href={"/docs/"+t("csv_pdf")} 
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <IconButton size="small">
+              <HelpOutlineIcon fontSize="inherit" />
+            </IconButton>
+          </a>
+        </Tooltip>
       </div>
       <textarea
         name="table_data"

@@ -1,25 +1,35 @@
+## BulkMailer docker-compose configuration
+## Defines backend and frontend services for development or deployment
 services:
   backend:
+    # Build the backend service from the ./backend directory
     build:
       context: ./backend
+    # Name the backend container
     container_name: bulkmailer-backend
+    # Map backend port 4000 to host port 4000
     ports:
       - "4000:4000"
+    # Load environment variables from backend/.env
     env_file:
       - ./backend/.env
+    # Mount uploads and log file as volumes for persistence
     volumes:
       - ./backend/uploads:/app/uploads
-      - ./backend/app.log:/app/app.log
 
   frontend:
+    # Build the frontend service from the ./frontend directory using Dockerfile.prod
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
       args:
-        VITE_API_BASE_URL: http://localhost:4000
+        VITE_API_BASE_URL: http://address:4000
+    # Name the frontend container
     container_name: bulkmailer-frontend
+    # Map frontend port 80 in the container to host port 5173
     ports:
       - "5173:80"
+    # Ensure backend is started before frontend
     depends_on:
       - backend
 

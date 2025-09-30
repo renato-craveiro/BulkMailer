@@ -1,12 +1,20 @@
+/**
+ * Author: <Renato Craveiro>
+ * Email: <renatoalex.olivcraveiro@gmail.com>
+ * Date: 2025-09
+ * Description: AppContainer component for BulkMailer frontend. Provides a centered, themed layout for the main content.
+ */
+
 import { Box, Paper } from "@mui/material";
 
+// AppContainer wraps children in a centered, responsive Paper card with theme-based background
 export default function AppContainer({ children }) {
   return (
     <Box
       sx={{
         width: "95vw",
         minHeight: "90vh",
-        bgcolor: "background.default", // usa a cor de fundo do tema
+        bgcolor: "background.default", // uses theme background color
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -19,7 +27,7 @@ export default function AppContainer({ children }) {
           width: "80%",
           height: "80%",
           maxWidth: 800,
-          bgcolor: "background.paper", // cor do "card" conforme o tema
+          bgcolor: "background.paper", // card color based on theme
         }}
       >
         {children}

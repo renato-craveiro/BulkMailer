@@ -1,18 +1,22 @@
+## Use Node.js 18 Alpine as the base image (lightweight)
 FROM node:18-alpine
 
+## Set working directory inside the container
 WORKDIR /app
 
-# Copia apenas package.json e package-lock.json primeiro
+## Copy only package.json and package-lock.json first for better caching
 COPY package*.json ./
 
-# Instala dependências
+## Install production dependencies
 RUN npm install --production
 
-# Copia o restante do código
+## Copy the rest of the application code
 COPY . .
 
-# Cria volumes para uploads e logs (opcional)
-VOLUME ["/app/uploads", "/app/app.log"]
+## Create volumes for uploads and logs (optional, for persistence)
+VOLUME ["/app/uploads"]
 
+## Expose port 4000 for the backend server
 EXPOSE 4000
+## Start the backend server
 CMD ["node", "index.js"]

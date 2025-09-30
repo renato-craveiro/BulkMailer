@@ -15,6 +15,11 @@
     "send_email": "Send Email",
 
     "html_template":"{0}, your request no. {2} was successfully processed!",
-    "csv_template": "test1@email.com; John; Request #1234\ntest2@email.com; Doe; Request #5678"
+    "csv_template": "test1@email.com; John; Request #1234\ntest2@email.com; Doe; Request #5678",
+
+    "help": "Help",
+
+    "csv_pdf": "create_csv_excel.pdf",
+    "html_pdf": "create_email_template_word.pdf"
   }
   

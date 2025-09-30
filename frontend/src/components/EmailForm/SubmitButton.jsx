@@ -1,5 +1,14 @@
+/**
+ * Author: <Renato Craveiro>
+ * Email: <renatoalex.olivcraveiro@gmail.com>
+ * Date: 2025-09
+ * Description: SubmitButton component for BulkMailer frontend. Renders the submit button for the email form with translation support.
+ */
 import { Grid, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
+
+
+// Renders the submit button for the email form
 export default function SubmitButton() {
   const { t } = useTranslation();
   return (

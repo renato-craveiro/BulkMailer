@@ -1,8 +1,18 @@
+/**
+ * Author: <Renato Craveiro>
+ * Email: <renatoalex.olivcraveiro@gmail.com>
+ * Date: 2025-09
+ * Description: Provides CLI functions to fetch, filter, and display reports from the BulkMailer backend.
+ */
 import axios from "axios";
 import inquirer from "inquirer";
 import { formatDate, extractTimestamp } from "../utils.js";
 import { BASE_URL } from "../config.js";
 
+/**
+ * Prompts the user to select a report from a list and displays its content.
+ * @param {string[]} files - Array of report filenames.
+ */
 export async function chooseReport(files) {
   if (!files.length) {
     console.log("❌ No report found.");
@@ -23,10 +33,15 @@ export async function chooseReport(files) {
   
   const res = await axios.get(`${BASE_URL}/reports`, { params: { filename: selected } });
 
-  console.log(`\n=== Conteúdo de ${selected} ===\n`);
+  // Display the content of the selected report
+  console.log(`\n=== Content of ${selected} ===\n`);
   console.log(res.data.message);
 }
 
+/**
+ * Handles the logic for the 'reports' command, including filtering and displaying reports.
+ * @param {object} params - Parameters for filtering or selecting reports.
+ */
 export async function getCmdReports(params) {
   const start = params.from;
   const end = params.until;
@@ -49,12 +64,18 @@ export async function getCmdReports(params) {
       return { name: `${f} → ${formatDate(ts)}`, value: f };
     });
     
+    // Print the list of available reports
     console.log(files);
   }else{
+    // Print the content of the selected report
     console.log(res.data.message);
   }
 }
 
+/**
+ * Interactive prompt for reports: lists all, filters by date, or quits.
+ * Guides the user through report selection and filtering.
+ */
 export async function getReports() {
   const { action } = await inquirer.prompt({
     type: "list",
@@ -85,6 +106,11 @@ export async function getReports() {
   }
 }
 
+/**
+ * Registers the 'reports' command in the CLI program.
+ * Supports filtering by date or opening a specific report.
+ * @param {object} program - Commander program instance.
+ */
 export function reportsCommand(program) {
   program
   .command("reports")
@@ -92,7 +118,7 @@ export function reportsCommand(program) {
   .option("-u, --until <text>", "Final filter (YYYY-MM-DD)")
   .option("-r, --report <text>", "Opens the specified report")
   .action(opts => {
-    // validação de exclusividade
+    // Exclusive option validation: do not use -r with -f or -u
     if (opts.report && (opts.from || opts.until)) {
       console.error("❌ Invalid option: do not use -r alongside -f or -u.");
       process.exit(1);

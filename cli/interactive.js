@@ -1,15 +1,26 @@
+/**
+ * Author: <Renato Craveiro>
+ * Email: <renatoalex.olivcraveiro@gmail.com>
+ * Date: 2025-09
+ * Description: Interactive CLI for BulkMailer. Allows users to send emails, check reports, and view logs through prompts.
+ */
 import inquirer from "inquirer";
-//import { ExitPromptError } from "@inquirer/core";
 import { validateFileExists } from "./utils.js";
 import { sendEmails } from "./commands/send.js";
 import { getReports } from "./commands/reports.js";
 import { getLog } from "./commands/logs.js";
 
+// Handle Ctrl+C interruption gracefully
 process.on("SIGINT", () => {
   console.log("\n❌ User Interrupted (Ctrl+C). Quitting...");
   process.exit(0);
 });
 
+/**
+ * Launches an interactive loop for BulkMailer CLI.
+ * Prompts the user to select actions: send emails, check reports, view logs, or quit.
+ * Handles user input and calls corresponding functions for each action.
+ */
 export async function interactiveLoop() {
   while (true) {
     try {

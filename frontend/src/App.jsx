@@ -1,20 +1,28 @@
+/**
+ * Author: <Renato Craveiro>
+ * Email: <renatoalex.olivcraveiro@gmail.com>
+ * Date: 2025-09
+ * Description: Main React App component for BulkMailer frontend. Handles theme, language, form state, file uploads, and email sending.
+ */
+
 import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import AppContainer from "./components/Layout/AppContainer";
 import Title from "./components/Layout/Title";
 import EmailForm from "./components/EmailForm/EmailForm";
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, IconButton, Snackbar, Alert, Button } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
-
 import i18n from './i18n';
-
 import { useTranslation } from 'react-i18next';
 
 export default function App() {
+  //  DEFINE HOOKS
+  
   const { t } = useTranslation();
+  // Theme mode state (light/dark)
   const [mode, setMode] = useState("light");
+  // Form state for email fields
   const [form, setForm] = useState({
     from: "",
     reply: "",
@@ -24,18 +32,18 @@ export default function App() {
     template: t("html_template"),
     table_data: t("csv_template"),
   });
-
+  // Update document title on language change
   useEffect(() => {
     document.title = t("title"); // "Automação de e-mails" ou "Mass Email Automation"
   }, [t]);
 
-  // Snackbar state
+  // Snackbar state for notifications
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-
+  // Memoized theme object for MUI
   const theme = useMemo(
     () =>
       createTheme({
@@ -46,9 +54,13 @@ export default function App() {
     [mode]
   );
 
+  //  DEFINE HANDLERS
+
+  // Handle form field changes
   const handleChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
+  // Handle HTML template file upload
   const handleHtmlFile = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -58,24 +70,25 @@ export default function App() {
     reader.readAsText(file, "windows-1252");
   };
 
+  // Handle CSV data file upload
   const handleCSVFile = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (ev) => {
-      // normaliza quebras de linha para '\n'
       const text = ev.target.result.replace(/\r\n|\r/g, "\n");
       setForm((f) => ({ ...f, table_data: text }));
     };
     reader.readAsText(file, "windows-1252");
   };
 
-
+  // Show a notification snackbar
   const showSnackbar = (message, severity = "success") => {
     setSnackbar({ open: true, message, severity });
   };
 
+  // Handle form submission to send emails
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -112,6 +125,7 @@ export default function App() {
     }
   };
 
+  // Change application language and update form templates
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang); // 'en' ou 'pt'
     setForm((f) => ({ ...f, table_data: t("csv_template"), template: t("html_template"), subject: t("title") }));
@@ -121,7 +135,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AppContainer>
-        {/* Toggle de Dark/Light Mode */}
+        {/* Toggle for Dark/Light Mode and Language */}
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem", marginBottom: "1rem" }}>
           <Button onClick={() => changeLanguage('pt')} color="inherit" sx={{ m: 0,p: 0,minWidth: "2rem",lineHeight: 1,fontSize: "1rem"}}>PT</Button>
           <Button onClick={() => changeLanguage('en')} color="inherit" sx={{ m: 0,p: 0,minWidth: "2rem",lineHeight: 1,fontSize: "1rem"}}>EN</Button>
@@ -137,7 +151,7 @@ export default function App() {
         {/* Header */}
         <Title />
 
-        {/* Formulário */}
+        {/* Email Form */}
         <EmailForm
           form={form}
           onChange={handleChange}

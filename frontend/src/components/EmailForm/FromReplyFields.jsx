@@ -1,6 +1,13 @@
+/**
+ * Author: <Renato Craveiro>
+ * Email: <renatoalex.olivcraveiro@gmail.com>
+ * Date: 2025-09
+ * Description: FromReplyFields component for BulkMailer frontend. Renders input fields for 'From' and 'Reply-To' email addresses in the email form.
+ */
 import { Grid, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
+// Renders 'From' and 'Reply-To' input fields for the email form
 export default function FromReplyFields({ onChange }) {
   const { t } = useTranslation();
   return (

@@ -1,3 +1,10 @@
+/**
+ * Author: <Renato Craveiro>
+ * Email: <renatoalex.olivcraveiro@gmail.com>
+ * Date: 2025-09
+ * Description: Express route for handling bulk email sending, including attachments and reporting.
+ */
+
 import express from "express";
 import multer from "multer";
 import fs from "fs";
@@ -7,19 +14,25 @@ import logger from "../config/logger.js";
 import { escapeRegExp, applyPlaceholders } from "../utils/helpers.js";
 
 const router = express.Router();
+// Configure multer for file uploads (images)
 const upload = multer({ dest: "uploads/" });
 
+/**
+ * POST /send-emails
+ * Handles bulk email sending with optional image attachments.
+ * Expects template, subject, and table_data in the request body.
+ */
 router.post("/send-emails", upload.array("images"), async (req, res) => {
   const { template, subject, from, reply, cc, BCC, table_data } = req.body;
-  //console.log("Transporter: "+process.env.SMTP_HOST)
   if (!template || !subject || !table_data) {
     return res.status(400).json({ error: "template, subject and table_data are mandatory." });
   }
 
+  // Parse CSV rows from table_data
   const rows = table_data.split("\n").map(l => l.trim()).filter(Boolean);
   const files = req.files || [];
 
-  // mapeamento de imagens
+  // Map uploaded images to CIDs for embedding in emails
   const cidMap = new Map();
   const attachments = files.map((file, i) => {
     const cid = `image${i + 1}`;
@@ -30,6 +43,7 @@ router.post("/send-emails", upload.array("images"), async (req, res) => {
   const sucessos = [];
   const falhas = [];
 
+  // Replace <img src="..."> in HTML with CID references for inline images
   const replaceImgSrcWithCid = (html) => {
     let out = html;
     for (const [filename, cid] of cidMap.entries()) {
@@ -45,6 +59,7 @@ router.post("/send-emails", upload.array("images"), async (req, res) => {
     return out;
   };
 
+  // Iterate over each row (recipient) and send personalized emails
   for (const row of rows) {
     const values = row.split(";").map(v => v.trim());
     const email = values[0];
@@ -69,11 +84,11 @@ router.post("/send-emails", upload.array("images"), async (req, res) => {
       logger.info("Successfully sent email:", email);
     } catch (err) {
       falhas.push(email);
-      console.log("Transporter: "+process.env.SMTP_HOST)
-      logger.error("Error sending email", { email, error: err }); // loga o objeto inteiro
+      logger.error("Error sending email", { email, error: err }); // log full error object
     }
   }
 
+  // Generate and save a report of successes and failures
   const relatorio = `Report (${new Date().toISOString()})
 Success: ${sucessos.join("\n")}
 Error: ${falhas.join("\n")}
@@ -81,12 +96,13 @@ Error: ${falhas.join("\n")}
   const outName = `email_report_${Date.now()}.txt`;
   fs.writeFileSync(path.join(process.cwd(), outName), relatorio);
 
-  // limpar uploads
+  // Clean up uploaded files
   for (const f of files) {
-    try { fs.unlinkSync(f.path); } catch {}
+    try { fs.unlinkSync(f.path); } catch { }
   }
 
   res.json({ sucessos, falhas, relatorio: outName });
 });
 
+// Export the router for use in the main app
 export default router;

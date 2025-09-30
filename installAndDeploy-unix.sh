@@ -1,4 +1,25 @@
 #!/bin/bash
+# BulkMailer install and deploy script for Unix/Linux/macOS
+# Installs Node.js and Docker if missing, then builds and runs the project with Docker Compose
+
+echo "=== BulkMailer Install and Deploy (Unix/Linux/macOS) ==="
+
+# --- 0. Ask if user wants to run configuration script ---
+read -p "Do you want to configure API_BASE_URL and SMTP_HOST? Press Enter to skip or type 'y' to configure [Enter=skip]: " choice
+
+if [ "$choice" = "y" ]; then
+    updateScript="./update-config-unix.sh"
+    if [ -f "$updateScript" ]; then
+        echo "Running configuration script..."
+        bash "$updateScript"
+        echo "Configuration script finished."
+    else
+        echo "Configuration script not found: $updateScript"
+        exit 1
+    fi
+else
+    echo "Skipping configuration script. Using default values."
+fi
 
 # --- 1. Install Node.js if not installed ---
 if ! command -v node &> /dev/null; then
@@ -34,8 +55,18 @@ fi
 
 # --- 3. Run docker-compose up --build ---
 echo "Running docker-compose up --build..."
-docker-compose up -d --build || { echo "docker-compose failed"; exit 1; }
+docker-compose up -d --build
+if [ $? -ne 0 ]; then
+    echo "docker-compose failed"
+    exit 1
+fi
 
-# --- 4. Call previous script ---
-echo "Calling previous script to set environment variable and run npm build..."
-./cli/install-unix.sh
+# --- 4. Call CLI install script ---
+cliScript="./cli/install-unix.sh"
+if [ -f "$cliScript" ]; then
+    echo "Calling previous script to set environment variable and run npm build..."
+    bash "$cliScript"
+else
+    echo "CLI install script not found: $cliScript"
+    exit 1
+fi
