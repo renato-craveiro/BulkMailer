@@ -10,6 +10,7 @@
     "template": "Template",
     "template_editor": "Template: Conteúdo base do Email (use {número} para cada conteúdo variável)",
     "upload_html": "Carregar HTML",
+    "upload_attachments": "Carregar Anexos",
     "upload_csv": "Carregar CSV",
     "submit": "Enviar",
     "send_email": "Enviar E-mail",

@@ -10,6 +10,7 @@
     "template_editor": "Template: Email base content (use {number} for each variable content)",
     "template": "Template",
     "upload_html": "Upload HTML",
+    "upload_attachments": "Upload Attachments",
     "upload_csv": "Upload CSV",
     "submit": "Send",
     "send_email": "Send Email",

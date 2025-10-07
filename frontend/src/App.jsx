@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function App() {
   //  DEFINE HOOKS
-  
+
   const { t } = useTranslation();
   // Theme mode state (light/dark)
   const [mode, setMode] = useState("light");
@@ -91,9 +91,29 @@ export default function App() {
   // Handle form submission to send emails
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    Object.entries(form).forEach(([k, v]) => data.append(k, v));
 
+    const data = new FormData();
+
+    // campos simples
+    const scalarKeys = ["from", "reply", "cc", "BCC", "subject", "template", "table_data"];
+    scalarKeys.forEach((k) => data.append(k, form[k] ?? ""));
+
+    // attachments (array de File)
+    if (Array.isArray(form.attachments)) {
+      form.attachments.forEach((file) => {
+        // o nome do campo tem de ser exactamente "attachments" (como espera o multer)
+        data.append("attachments", file, file.name);
+      });
+    }
+
+    // images inline (se aplicável)
+    if (Array.isArray(form.images)) {
+      form.images.forEach((file) => {
+        data.append("images", file, file.name);
+      });
+    }
+
+    console.log("attachments in form:", form.attachments);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/send-emails`,
@@ -137,9 +157,9 @@ export default function App() {
       <AppContainer>
         {/* Toggle for Dark/Light Mode and Language */}
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem", marginBottom: "1rem" }}>
-          <Button onClick={() => changeLanguage('pt')} color="inherit" sx={{ m: 0,p: 0,minWidth: "2rem",lineHeight: 1,fontSize: "1rem"}}>PT</Button>
-          <Button onClick={() => changeLanguage('en')} color="inherit" sx={{ m: 0,p: 0,minWidth: "2rem",lineHeight: 1,fontSize: "1rem"}}>EN</Button>
-          
+          <Button onClick={() => changeLanguage('pt')} color="inherit" sx={{ m: 0, p: 0, minWidth: "2rem", lineHeight: 1, fontSize: "1rem" }}>PT</Button>
+          <Button onClick={() => changeLanguage('en')} color="inherit" sx={{ m: 0, p: 0, minWidth: "2rem", lineHeight: 1, fontSize: "1rem" }}>EN</Button>
+
           <IconButton
             onClick={() => setMode(prev => (prev === "light" ? "dark" : "light"))}
             color="inherit"

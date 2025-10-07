@@ -69,7 +69,7 @@ $RECYCLE.BIN/
 .env.*.local
 
 # =======================
-# Reports 
+# Reports (se não quiser versionar)
 # =======================
 relatorio_emails_*.txt
 email_report_*.txt

@@ -3,7 +3,7 @@
 Set-Location -Path $PSScriptRoot
 # Define variable
 $envName = "API_BASE_URL"
-$envValue = "http://172.23.43:4000"
+$envValue = "http://localhost:4000"
 
 # Set permanent environment variable (User scope)
 [System.Environment]::SetEnvironmentVariable($envName, $envValue, "User")
