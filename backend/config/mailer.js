@@ -13,7 +13,7 @@ dotenv.config();
 // Create a Nodemailer transporter using SMTP settings from environment variables
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: 25,
+  port: process.env.SMTP_PORT,
   secure: false,
   tls: { rejectUnauthorized: false },
 });

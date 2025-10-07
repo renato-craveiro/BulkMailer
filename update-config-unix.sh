@@ -7,7 +7,7 @@ echo "=== BulkMailer Configuration (Unix/Linux/macOS) ==="
 # --- 1. Ask the user for input ---
 read -p "Enter the value for API_BASE_URL (e.g., http://localhost:4000): " apiBaseUrl
 read -p "Enter the value for SMTP_HOST (e.g., smtp.company.com): " smtpHost
-
+read -p "Enter the value for SMTP_PORT (e.g., 587): " smtpPort
 # --- 2. Modify install-win.ps1 ---
 installPath="./cli/install-unix.sh"
 if [ -f "$installPath" ]; then
@@ -26,6 +26,14 @@ if [ -f "$envExample" ]; then
     cp "$envExample" "$envFile"
     sed -i.bak "s|^SMTP_HOST=.*|SMTP_HOST=$smtpHost|" "$envFile"
     echo "./backend/.env created/updated with new SMTP_HOST"
+else
+    echo ".env.example not found in ./backend/"
+fi
+
+if [ -f "$envExample" ]; then
+    cp "$envExample" "$envFile"
+    sed -i.bak "s|^SMTP_PORT=.*|SMTP_PORT=$smtpPort|" "$envFile"
+    echo "./backend/.env created/updated with new SMTP_PORT"
 else
     echo ".env.example not found in ./backend/"
 fi

@@ -8,6 +8,8 @@ Write-Host "=== BulkMailer Configuration (Windows) ==="
 # --- 1. Ask the user for input ---
 $apiBaseUrl = Read-Host "Enter the value for API_BASE_URL (e.g., http://localhost:4000)"
 $smtpHost = Read-Host "Enter the value for SMTP_HOST (e.g., smtp.company.com)"
+$smtpPort = Read-Host "Enter the value for SMTP_PORT (e.g., 587)"
+~
 
 # --- 2. Modify install-win.ps1 ---
 $installPath = ".\cli\install-win.ps1"
@@ -24,8 +26,16 @@ $envPath = ".\backend\.env"
 
 if (Test-Path $envExamplePath) {
     Copy-Item $envExamplePath $envPath -Force
-    (Get-Content $envPath) -replace '^SMTP_HOST=.*$', "SMTP_HOST=$smtpHost" | Set-Content $envPath
+    (Get-Content $envPath) -replace '^SMTP_HOST=.*$', "SMTP_HOST=$smtpHost" | Set-Content $envPath 
     Write-Host ".\backend\.env created/updated with new SMTP_HOST"
+} else {
+    Write-Host ".env.example not found in ./backend/"
+}
+
+if (Test-Path $envExamplePath) {
+    Copy-Item $envExamplePath $envPath -Force
+    (Get-Content $envPath) -replace '^SMTP_PORT=.*$', "SMTP_PORT=$smtpPort" | Set-Content $envPath
+    Write-Host ".\backend\.env created/updated with new SMTP_PORT"
 } else {
     Write-Host ".env.example not found in ./backend/"
 }
